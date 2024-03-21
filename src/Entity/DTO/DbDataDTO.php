@@ -2,7 +2,7 @@
 
 namespace App\Entity\DTO;
 
-class DbData
+class DbDataDTO
 {
     public string $dbName;
     public string $host;

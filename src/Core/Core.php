@@ -2,6 +2,8 @@
 
 namespace App\Core;
 
+use App\Entity\DTO\ControllerDataDTO;
+use App\Entity\DTO\ControllerListDTO;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use ReflectionClass;
@@ -10,49 +12,85 @@ use RegexIterator;
 class Core
 {
     const CONTROLLER_NAMESPACE = "App\\Controller\\";
+    const CURRENT_ROUTE_NAME = "current_route";
+    const LOGIN_ROUTE_NAME = "app_login";
+    const LOGOUT_ROUTE_NAME = "app_logout";
+    const LAST_ROUTE_NAME = 'last_route';
+    const DEFAULT_ROUTE_NAME = 'app_main';
 
     public function start()
     {
-        $controllers = $this->getControllers();
-        if (!$controllers) {
-            header($_SERVER["SERVER_PROTOCOL"] . "404 Not Found");
+        session_start();
+        $uri = $_SERVER["REQUEST_URI"];
+        $this->scanControllers($uri);
+
+        if (!ControllerListDTO::getList()) {
+            header($_SERVER["SERVER_PROTOCOL"] . "500 Controllers Not Found");
             return '';
         }
+        $currentController = $this->getCurrentController($uri, $_SERVER["REQUEST_METHOD"]);
+        if ($currentController) {
+            $_SESSION[self::CURRENT_ROUTE_NAME] = $currentController->getName();
+            $class = $currentController->getClass();
+            $execute = new $class;
+            $func = $currentController->getMethod()->getName();
+            $param = null;
+            foreach ($currentController->getParams() as $paramName => $item) { //для одного параметра!!!
+                $param = $item;
+            }
+            return $execute->$func($param); // хардкод для одного параметра
+        }
 
-        $uri = $_SERVER["REQUEST_URI"];
-        $serverMethod = $_SERVER["REQUEST_METHOD"];
+        header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
+    }
+
+    private function getCurrentController(string $uri, string $serverMethod):?ControllerDataDTO
+    {
+        $controllerList = ControllerListDTO::getList();
+        /** @var ControllerDataDTO $controller */
+        foreach ($controllerList as $controller) {
+            if ($this->matchRoute($uri, $controller->getRoute())) {
+                if ('' === $controller->getHttpMethod() || $controller->getHttpMethod() == $serverMethod) {
+                    return $controller;
+                }
+            }
+        }
+        return null;
+    }
+    private function scanControllers($uri)
+    {
+        $controllers = $this->getControllers();
+
+        if (!$controllers) {
+            return;
+        }
 
         foreach ($controllers as $controller) {
             $class = self::CONTROLLER_NAMESPACE . $controller;
             $methods = (new ReflectionClass($class))->getMethods();
-
-            $resultMethod = null;
-            $data = [];
             foreach ($methods as $method) {
                 $doc = $method->getDocComment();
                 if ($method->isPublic() && preg_match("/\*\s*@Route\s*\(/", $doc)) {
                     $data = $this->parseDoc($doc);
-                    if ($this->matchRoute($uri, $data['route'])) {
-                        if ((isset($data['method']) && $data['method'] == $serverMethod) || !isset($data['method'])) {
-                            $resultMethod = $method;
-                            break;
-                        }
+                    if (isset($data['route'])) {
+                        $newController = (new ControllerDataDTO())
+                            ->setRoute($data['route'])
+                            ->setName($data['name'] ?? '')
+                            ->setHttpMethod($data['method'] ?? '')
+                            ->setMethod($method)
+                            ->setClass($class);
+                        $params = $this->getRouteParams($uri, $newController->getRoute());
+                        $newController->setParams($params);
+                        ControllerListDTO::addData($newController);
+
+
                     }
                 }
             }
-            if ($resultMethod) {
-                $execute = new $class;
-                $func = $resultMethod->getName();
-                $params = $this->getRouteParams($uri, $data['route']);
-                if ($resultMethod->getParameters()[0] && $resultMethod->getParameters()[0]->getType()->getName() == 'int') $params[0] = (int)$params[0];
-                return $execute->$func($params[0]); // хардкод для одного параметра
-            }
         }
-        header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
     }
 
-    private
-    function matchRoute(string $uri, string $route): bool
+    private function matchRoute(string $uri, string $route): bool
     {
         $routePattern = preg_replace('/\//', '\/', $route);
         $routePattern = '/^' . preg_replace("/\{(.*)}/", '[a-z0-9\s\-\.]+', $routePattern) . '$/';
@@ -74,7 +112,7 @@ class Core
                 $var = $arr2[0];
                 if ($patternArr[0]) $var = preg_replace('/^' . $patternArr[0] . '/', '', $var);
                 if ($patternArr[1]) $var = preg_replace('/' . $patternArr[1] . '$/', '', $var);
-                return [0 => $var];
+                return [$name => $var];
             }
         }
         return [];

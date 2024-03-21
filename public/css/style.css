@@ -1,6 +1,10 @@
-body{
+body,
+.container {
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    background-color: #f0f0f0;
+    align-items: center;
 }
 
 table {
@@ -24,6 +28,7 @@ thead th:nth-child(3) {
 thead th:nth-child(4) {
     width: 25px;
 }
+
 thead th:nth-child(5) {
     width: 25px;
 }
@@ -32,7 +37,8 @@ tr {
     width: 100%;
     background-color: #f0f0f0;
 }
-tr:hover{
+
+tr:hover {
     background-color: #e5e5e5;
 }
 
@@ -57,18 +63,12 @@ button {
 }
 
 .edit:has(button:hover),
-tr:has(.edit button:hover){
+tr:has(.edit button:hover) {
     background-color: #d0ffd0;
 }
 
-.delete:has(button:hover),
-tr:has(.delete button:hover){
+tr:has(input:checked) {
     background-color: #ffd0d0;
-}
-
-.delete svg {
-    fill: red;
-    width: 12px
 }
 
 .edit svg {
@@ -80,7 +80,85 @@ tr:has(.delete button:hover){
     width: 100%;
 }
 
-.edit, .delete {
-
+.container {
+    position: relative;
+    align-items: center;
+    width: 100%;
+    max-width: 1024px;
 }
+
+.login-field {
+    position: fixed;
+    top: 30%;
+    padding: 1.5rem 1rem;
+    max-width: 400px;
+    border-radius: 15px;
+    box-shadow: 1px 2px 5px darkgray;
+    background-color: #f0f0f0;
+    margin: 0.5rem;
+}
+
+.login-field input {
+    flex: 1;
+    border-radius: 5px;
+    border: 0;
+    padding: 5px;
+    margin-bottom: 1rem;
+    box-shadow: 1px 2px 5px darkgray;
+}
+
+.login-field label {
+    width: 130px;
+    margin-bottom: 1rem;
+}
+
+.row {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+}
+
+.row.end {
+    justify-content: end;
+}
+
+.send {
+    padding: 5px 10px;
+    background-color: #e5e5e5;
+    border-radius: 5px;
+    box-shadow: 1px 2px 5px darkgray;
+}
+
+.send:hover {
+    background-color: #e0e0e0;
+}
+
+.send:active {
+    position: relative;
+    top: -1px;
+}
+
+.error {
+    font-weight: bold;
+    font-size: 0.8rem;
+    color: red;
+    margin-bottom: 1rem;
+}
+
+.menu-cont {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.menu-cont button {
+    background-color: #e0e0e0;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 1px 2px 5px gray;
+}
+
 

@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\DTO\DbData;
+use App\Entity\DTO\DbDataDTO;
 use PDO;
 
 class DbHandler
@@ -19,7 +19,7 @@ class DbHandler
     private function connect(): PDO
     {
         if (!$this->connection) {
-            /** @var DbData $dbData */
+            /** @var DbDataDTO $dbData */
             $dbData = $this->dataHandler->readJson(self::DB_FILENAME);
             $pdoRequest = "mysql:host={$dbData->host};dbname={$dbData->dbName};charset=utf8";
             try {

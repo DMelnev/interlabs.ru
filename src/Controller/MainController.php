@@ -2,40 +2,48 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
+use App\Repository\UserRepository;
 use App\Service\dbHandler;
 
 class MainController extends AbstractController
 {
     private DbHandler $db;
+    private UserRepository $userRepository;
 
     public function __construct()
     {
         $this->db = new dbHandler();
+        $this->userRepository = new UserRepository();
+        parent::__construct();
     }
 
     /**
-     * @Route("/", method = "GET")
+     * @Route("/", name="app_main", method = "GET")
      */
     public function index()
     {
-        $sql = 'SELECT * FROM user';
-        $params = [];
-        $result = $this->db->query($sql, $params, User::class);
-        return $this->render('/templates/content/list.php', ['users' => $result]);
+        $user = $this->security->getUser();
+        if (!$user) return $this->redirectToRoute('app_login');
+
+        return $this->render('/templates/content/list.php', [
+            'users' => $this->userRepository->getAll(),
+            'user' => $user,
+        ]);
     }
 
     /**
-     * @Route("/name/{name}", method="GET")
+     * @Route("/name/{name}", name="app_get_name", method="GET")
      */
     public function getName(string $name)
     {
-//        $sql = 'SELECT * FROM user';
-//        $params = [];
-//        $result = $this->db->query($sql, $params, User::class);
-//        return $result;
+        $user = $this->security->getUser();
+        if (!$user) return $this->redirectToRoute('app_login');
 
-        return $this->render('/templates/content/list.php', ['test' => 'test123']);
+        return $this->render('/templates/content/list.php', [
+            'users' => $this->userRepository->getAll(),
+            'name' => $name,
+            'user' => $user,
+        ]);
     }
 
 }
