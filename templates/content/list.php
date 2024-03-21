@@ -1,7 +1,6 @@
 <?php include_once "../templates/head.php"; ?>
     <div class="container">
         <table>
-            <caption><?php if ($user) echo $user->getName(); ?></caption>
             <thead>
             <tr>
                 <th>ФИО</th>

@@ -20,12 +20,18 @@ abstract class AbstractController
     protected function render(string $name, array $parameters)
     {
         $path = dirname(__DIR__, 2) . $name;
-        if (!file_exists($path)) return $this->httpError("500"," Error template path!");
+        if (!file_exists($path)) return $this->httpError("500", " Error template path!");
 
         foreach ($parameters as $key => $parameter) {
             $$key = $parameter;
         }
         include_once $path;
+    }
+
+    protected function renderJson(array $data)
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        return json_encode($data);
     }
 
     protected function httpError(int $code, string $message): string
@@ -42,17 +48,19 @@ abstract class AbstractController
 
     protected function redirectToRoute(string $route, array $params = [])
     {
+
         if (
             $route == Core::LOGIN_ROUTE_NAME
             && $_SESSION[Core::CURRENT_ROUTE_NAME] != Core::LOGIN_ROUTE_NAME
             && $_SESSION[Core::CURRENT_ROUTE_NAME] != Core::LOGOUT_ROUTE_NAME
         ) {
             $_SESSION[Core::LAST_ROUTE_NAME] = $_SESSION[Core::CURRENT_ROUTE_NAME] ?? '';
+            $_SESSION[Core::LAST_PARAMS_NAME] = $_SESSION[Core::CURRENT_PARAMS_NAME] ?? [];
         }
         /** @var ControllerDataDTO $controller */
         foreach (ControllerListDTO::getList() as $controller) {
             if ($controller->getName() === $route) {
-                $this->redirect($this->getLink($controller));
+                $this->redirect($this->getLink($controller, $params));
                 return null;
             }
         }
@@ -61,24 +69,25 @@ abstract class AbstractController
 
     protected function redirectToLast(string $route = null)
     {
-        var_dump($_SESSION[Core::LAST_ROUTE_NAME]);
         if ($_SESSION[Core::LAST_ROUTE_NAME]) {
-            $this->redirectToRoute($_SESSION[Core::LAST_ROUTE_NAME]);
+            $this->redirectToRoute($_SESSION[Core::LAST_ROUTE_NAME], $_SESSION[Core::LAST_PARAMS_NAME]);
             unset($_SESSION[Core::LAST_ROUTE_NAME]);
+            unset($_SESSION[Core::LAST_PARAMS_NAME]);
         } else {
             $this->redirectToRoute($route ?: Core::DEFAULT_ROUTE_NAME);
         }
         return null;
     }
 
-    private function getLink(ControllerDataDTO $dataDTO): string
+    private function getLink(ControllerDataDTO $dataDTO, array $params): string
     {
         $link = $dataDTO->getRoute();
 
-        foreach ($dataDTO->getParams() as $name => $item) {
+        foreach ($params as $name => $value) {
             $pattern = "/\{" . $name . "}/";
-            $link = preg_replace($pattern, $item, $link);
+            $link = preg_replace($pattern, $value, $link);
         }
+
         return $link;
     }
 

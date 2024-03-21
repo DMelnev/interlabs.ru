@@ -13,9 +13,11 @@ class Core
 {
     const CONTROLLER_NAMESPACE = "App\\Controller\\";
     const CURRENT_ROUTE_NAME = "current_route";
+    const CURRENT_PARAMS_NAME = "current_params";
     const LOGIN_ROUTE_NAME = "app_login";
     const LOGOUT_ROUTE_NAME = "app_logout";
     const LAST_ROUTE_NAME = 'last_route';
+    const LAST_PARAMS_NAME = 'last_params';
     const DEFAULT_ROUTE_NAME = 'app_main';
 
     public function start()
@@ -31,6 +33,7 @@ class Core
         $currentController = $this->getCurrentController($uri, $_SERVER["REQUEST_METHOD"]);
         if ($currentController) {
             $_SESSION[self::CURRENT_ROUTE_NAME] = $currentController->getName();
+            $_SESSION[self::CURRENT_PARAMS_NAME] = $currentController->getParams();
             $class = $currentController->getClass();
             $execute = new $class;
             $func = $currentController->getMethod()->getName();
