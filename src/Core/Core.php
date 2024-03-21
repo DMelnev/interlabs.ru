@@ -44,7 +44,7 @@ class Core
                 $execute = new $class;
                 $func = $resultMethod->getName();
                 $params = $this->getRouteParams($uri, $data['route']);
-                if ($resultMethod->getParameters()[0]->getType()->getName() == 'int') $params[0] = (int)$params[0];
+                if ($resultMethod->getParameters()[0] && $resultMethod->getParameters()[0]->getType()->getName() == 'int') $params[0] = (int)$params[0];
                 return $execute->$func($params[0]); // хардкод для одного параметра
             }
         }

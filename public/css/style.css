@@ -1,0 +1,86 @@
+body{
+    display: flex;
+    justify-content: center;
+}
+
+table {
+    table-layout: fixed;
+    width: 100%;
+    max-width: 1024px;
+}
+
+thead th:nth-child(1) {
+    width: 30%;
+}
+
+thead th:nth-child(2) {
+    width: 20%;
+}
+
+thead th:nth-child(3) {
+    width: 45%;
+}
+
+thead th:nth-child(4) {
+    width: 25px;
+}
+thead th:nth-child(5) {
+    width: 25px;
+}
+
+tr {
+    width: 100%;
+    background-color: #f0f0f0;
+}
+tr:hover{
+    background-color: #e5e5e5;
+}
+
+td, th {
+    padding: 2px 5px;
+    margin: 1px 1px 2px 1px;
+    background-color: transparent;
+    border-radius: 5px;
+    box-shadow: 1px 2px 5px darkgray;
+    font-size: 0.9rem;
+}
+
+th {
+    background-color: lightgray;
+}
+
+button {
+    margin: 1px 1px;
+    border: 0;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+.edit:has(button:hover),
+tr:has(.edit button:hover){
+    background-color: #d0ffd0;
+}
+
+.delete:has(button:hover),
+tr:has(.delete button:hover){
+    background-color: #ffd0d0;
+}
+
+.delete svg {
+    fill: red;
+    width: 12px
+}
+
+.edit svg {
+    fill: green;
+    width: 15px;
+}
+
+.address {
+    width: 100%;
+}
+
+.edit, .delete {
+
+}
+

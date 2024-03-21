@@ -1,12 +1,14 @@
 <?php
+
 namespace App\Controller;
 
 use App\Entity\User;
 use App\Service\dbHandler;
 
-class MainController
+class MainController extends AbstractController
 {
-private DbHandler $db;
+    private DbHandler $db;
+
     public function __construct()
     {
         $this->db = new dbHandler();
@@ -20,7 +22,7 @@ private DbHandler $db;
         $sql = 'SELECT * FROM user';
         $params = [];
         $result = $this->db->query($sql, $params, User::class);
-        return $result;
+        return $this->render('/templates/content/list.php', ['users' => $result]);
     }
 
     /**
@@ -33,7 +35,7 @@ private DbHandler $db;
 //        $result = $this->db->query($sql, $params, User::class);
 //        return $result;
 
-        echo 'sdvsd '. $name;
+        return $this->render('/templates/content/list.php', ['test' => 'test123']);
     }
 
 }
