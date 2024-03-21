@@ -16,12 +16,12 @@ class SecurityController extends AbstractController
         $plainPassword = $_POST['password'] ?? '';
         if ($login) {
             if ($this->security->authorise($login, $plainPassword)) {
-
                 return $this->redirectToLast();
             } else {
                 $error = 'Не верный логин или пароль!';
             }
         }
+
         return $this->render('/templates/content/login.php', ['error' => $error]);
     }
 
@@ -31,6 +31,6 @@ class SecurityController extends AbstractController
     public function logOut()
     {
         $this->security->unAuthorise();
-        $this->redirectToRoute('app_login');
+        return $this->redirectToRoute('app_login');
     }
 }

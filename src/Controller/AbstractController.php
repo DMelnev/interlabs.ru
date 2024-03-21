@@ -31,6 +31,7 @@ abstract class AbstractController
     protected function renderJson(array $data)
     {
         header('Content-Type: application/json; charset=utf-8');
+
         return json_encode($data);
     }
 
@@ -44,37 +45,30 @@ abstract class AbstractController
     protected function redirect(string $url)
     {
         header('Location: ' . $url);
+        return null;
     }
 
     protected function redirectToRoute(string $route, array $params = [])
     {
+        $this->sessionWriteLastRoute($route);
 
-        if (
-            $route == Core::LOGIN_ROUTE_NAME
-            && $_SESSION[Core::CURRENT_ROUTE_NAME] != Core::LOGIN_ROUTE_NAME
-            && $_SESSION[Core::CURRENT_ROUTE_NAME] != Core::LOGOUT_ROUTE_NAME
-        ) {
-            $_SESSION[Core::LAST_ROUTE_NAME] = $_SESSION[Core::CURRENT_ROUTE_NAME] ?? '';
-            $_SESSION[Core::LAST_PARAMS_NAME] = $_SESSION[Core::CURRENT_PARAMS_NAME] ?? [];
-        }
         /** @var ControllerDataDTO $controller */
         foreach (ControllerListDTO::getList() as $controller) {
             if ($controller->getName() === $route) {
-                $this->redirect($this->getLink($controller, $params));
-                return null;
+                return $this->redirect($this->getLink($controller, $params));
             }
         }
         return $this->httpError('500', 'Incorrect Controller Name!');
     }
 
-    protected function redirectToLast(string $route = null)
+    protected function redirectToLast(string $defaultRoute = null)
     {
         if ($_SESSION[Core::LAST_ROUTE_NAME]) {
             $this->redirectToRoute($_SESSION[Core::LAST_ROUTE_NAME], $_SESSION[Core::LAST_PARAMS_NAME]);
             unset($_SESSION[Core::LAST_ROUTE_NAME]);
             unset($_SESSION[Core::LAST_PARAMS_NAME]);
         } else {
-            $this->redirectToRoute($route ?: Core::DEFAULT_ROUTE_NAME);
+            $this->redirectToRoute($defaultRoute ?: Core::DEFAULT_ROUTE_NAME);
         }
         return null;
     }
@@ -89,6 +83,18 @@ abstract class AbstractController
         }
 
         return $link;
+    }
+
+    private function sessionWriteLastRoute(string $route)
+    {
+        if (
+            $route == Core::LOGIN_ROUTE_NAME
+            && $_SESSION[Core::CURRENT_ROUTE_NAME] != Core::LOGIN_ROUTE_NAME
+            && $_SESSION[Core::CURRENT_ROUTE_NAME] != Core::LOGOUT_ROUTE_NAME
+        ) {
+            $_SESSION[Core::LAST_ROUTE_NAME] = $_SESSION[Core::CURRENT_ROUTE_NAME] ?? '';
+            $_SESSION[Core::LAST_PARAMS_NAME] = $_SESSION[Core::CURRENT_PARAMS_NAME] ?? [];
+        }
     }
 
 }

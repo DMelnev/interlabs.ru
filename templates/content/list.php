@@ -1,6 +1,9 @@
 <?php include_once "../templates/head.php"; ?>
     <div class="container">
         <table>
+            <?php if ($name) { ?>
+            <caption><?= $name ?></caption>
+            <?php } ?>
             <thead>
             <tr>
                 <th>ФИО</th>

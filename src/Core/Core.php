@@ -28,7 +28,7 @@ class Core
 
         if (!ControllerListDTO::getList()) {
             header($_SERVER["SERVER_PROTOCOL"] . "500 Controllers Not Found");
-            return '';
+            return null;
         }
         $currentController = $this->getCurrentController($uri, $_SERVER["REQUEST_METHOD"]);
         if ($currentController) {
@@ -41,10 +41,12 @@ class Core
             foreach ($currentController->getParams() as $paramName => $item) { //для одного параметра!!!
                 $param = $item;
             }
+
             return $execute->$func($param); // хардкод для одного параметра
         }
 
         header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
+        return null;
     }
 
     private function getCurrentController(string $uri, string $serverMethod):?ControllerDataDTO
@@ -63,11 +65,6 @@ class Core
     private function scanControllers($uri)
     {
         $controllers = $this->getControllers();
-
-        if (!$controllers) {
-            return;
-        }
-
         foreach ($controllers as $controller) {
             $class = self::CONTROLLER_NAMESPACE . $controller;
             $methods = (new ReflectionClass($class))->getMethods();
@@ -85,8 +82,6 @@ class Core
                         $params = $this->getRouteParams($uri, $newController->getRoute());
                         $newController->setParams($params);
                         ControllerListDTO::addData($newController);
-
-
                     }
                 }
             }
@@ -106,7 +101,7 @@ class Core
         preg_match("/\{(.*)}/", $route, $arr);
         if (isset($arr[0])) {
             $patternArr = explode($arr[0], $route);
-            $name = preg_replace('/[\{}]/', '', $arr[0]);//понадобится для нескольких параметров
+            $name = preg_replace('/[\{}]/', '', $arr[0]);
             $patternArr[0] = preg_replace('/\//', '\/', $patternArr[0]);
             $patternArr[1] = preg_replace('/\//', '\/', $patternArr[1]);
             $pattern = '/^' . $patternArr[0] . '(.*)' . $patternArr[1] . '$/';
