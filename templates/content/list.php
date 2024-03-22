@@ -2,25 +2,27 @@
     <div class="container">
         <table>
             <?php if ($name) { ?>
-            <caption><?= $name ?></caption>
+                <caption><?= $name ?></caption>
             <?php } ?>
-            <thead>
+            <thead id="thead">
             <tr>
-                <th>ФИО</th>
-                <th>E-mail</th>
-                <th class="address">Адрес</th>
+                <th data-type="int">id</th>
+                <th data-type="string">ФИО</th>
+                <th data-type="string">E-mail</th>
+                <th class="address" data-type="string">Адрес</th>
                 <th>&nbsp;</th>
                 <th>&nbsp;</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="tbody">
             <?php
             /** @var User $user */
 
             use App\Entity\User;
 
             foreach ($users as $user) { ?>
-                <tr data-id="<?= $user->getId() ?>">
+                <tr id="user<?= $user->getId() ?>" draggable="true" class="draggable">
+                    <td><?= $user->getId() ?></td>
                     <td><?= $user->getName() ?></td>
                     <td><?= $user->getEmail() ?></td>
                     <td class="address"><?= $user->getAddress() ?></td>
@@ -32,13 +34,45 @@
                         </button>
                     </td>
                     <td class="delete">
-                        <input type="checkbox" name="<?= $user->getId() ?>">
+                        <input type="checkbox" data-user-id="<?= $user->getId() ?>">
                     </td>
                 </tr>
             <?php } ?>
             </tbody>
         </table>
     </div>
+    <div class="container">
+        <div class="row">
+            <div class="menu-cont">
+                <div>
+                    <button id="add-button">добавить</button>
+                </div>
+                <div>
+                    <button id="delete-button">Удалить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <dialog id="edit-dialog">
+        <div class="modal-inner">
+            <h3>Позвоните с вашего номера</h3>
+            <p class="client-number nowrap">{{ number }}</p>
+            <h3>На номер </h3>
+            <p class="caller-number nowrap"><a href="tel:+78005558607">8(800) 555-86-07</a></p>
+            <p class="small-text">Звонок бесплатный. <b>Разговаривать ни с кем не нужно.</b> {{ text }}.</p>
+            <div class="cancel"></div>
+        </div>
+    </dialog>
+    <dialog id="add-dialog">
+        <div class="modal-inner">
+            <h3>Позвоните с вашего номера</h3>
+            <p class="client-number nowrap">{{ number }}</p>
+            <h3>На номер </h3>
+            <p class="caller-number nowrap"><a href="tel:+78005558607">8(800) 555-86-07</a></p>
+            <p class="small-text">Звонок бесплатный. <b>Разговаривать ни с кем не нужно.</b> {{ text }}.</p>
+            <div class="cancel"></div>
+        </div>
+    </dialog>
     <script src="/public/js/script.js" type="text/javascript"></script>
 
 <?php include_once "../templates/footer.php"; ?>

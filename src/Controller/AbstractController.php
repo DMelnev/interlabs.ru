@@ -17,9 +17,9 @@ abstract class AbstractController
         $this->security = new Security();
     }
 
-    protected function render(string $name, array $parameters)
+    protected function render(string $templateName, array $parameters)
     {
-        $path = dirname(__DIR__, 2) . $name;
+        $path = dirname(__DIR__, 2) . $templateName;
         if (!file_exists($path)) return $this->httpError("500", " Error template path!");
 
         foreach ($parameters as $key => $parameter) {

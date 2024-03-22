@@ -24,7 +24,6 @@ class MainController extends AbstractController
     {
         $user = $this->security->getUser();
         if (!$user) return $this->redirectToRoute('app_login');
-
         return $this->render('/templates/content/list.php', [
             'users' => $this->userRepository->getAll(),
             'user' => $user,
@@ -32,7 +31,7 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route("/name/{name}", name="app_get_name", method="GET")
+     * @Route("/name/{name}", name="app_name_get", method="GET")
      */
     public function getName(string $name)
     {

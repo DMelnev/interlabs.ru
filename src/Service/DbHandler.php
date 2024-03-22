@@ -9,6 +9,7 @@ class DbHandler
 {
     const DB_FILENAME = 'db.json';
     private $connection;
+    private $query;
     private DataHandler $dataHandler;
 
     public function __construct()
@@ -33,11 +34,19 @@ class DbHandler
 
     public function query(string $sql, array $parameters, string $class = null)
     {
-        $query = ($this->connect())->prepare($sql);
-        if ($class) $query->setFetchMode(PDO::FETCH_CLASS, $class);
-        $query->execute($parameters);
+        $this->query = ($this->connect())->prepare($sql);
+        if ($class) $this->query->setFetchMode(PDO::FETCH_CLASS, $class);
+        $this->query->execute($parameters);
 
-        return $query->fetchAll();
+        return $this->query->fetchAll();
+    }
+
+    public function getError(): ?string
+    {
+        if (!$this->query) return null;
+        $error = $this->query->errorInfo();
+
+        return $error[0] === PDO::ERR_NONE ? null : $error[2];
     }
 
 }
