@@ -57,13 +57,6 @@
     <dialog id="add-dialog">
         <form name="add-form" class="modal-inner">
             <h3>Добавление нового пользователя</h3>
-
-            <label for="inp-add-name">Имя пользователя</label>
-            <input id="inp-add-name" type="text" placeholder="Имя пользователя" required>
-            <label for="inp-add-email">E-mail</label>
-            <input id="inp-add-email" type="email" placeholder="E-mail">
-            <label for="inp-add-address">Адрес</label>
-            <textarea id="inp-add-address" placeholder="Адрес"></textarea>
             <label for="inp-add-login">Логин</label>
             <input id="inp-add-login" type="text" placeholder="Логин" required>
             <label for="inp-add-password">Пароль</label>
@@ -72,6 +65,12 @@
                 <label for="show-password">Показать пароль</label>
                 <input type="checkbox" id="show-password">
             </div>
+            <label for="inp-add-name">Имя пользователя</label>
+            <input id="inp-add-name" type="text" placeholder="Имя пользователя" required>
+            <label for="inp-add-email">E-mail</label>
+            <input id="inp-add-email" type="email" placeholder="E-mail">
+            <label for="inp-add-address">Адрес</label>
+            <textarea id="inp-add-address" placeholder="Адрес"></textarea>
             <div class="menu-cont">
                 <div></div>
                 <button id="add-send-button">Отправить</button>

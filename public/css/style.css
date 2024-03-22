@@ -252,7 +252,7 @@ dialog::backdrop {
 }
 
 .modal-inner input[type="checkbox"] {
-    width: 30px;
+    width: 15px;
     border: 0;
 }
 
@@ -262,5 +262,8 @@ dialog::backdrop {
 
 .modal-inner .row label {
     margin: 0 1rem;
+}
+.modal-inner .menu-cont {
+    margin-top: 1rem;
 }
 
