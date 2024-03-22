@@ -53,17 +53,34 @@
             </div>
         </div>
     </div>
-    <dialog id="edit-dialog">
-        <div class="modal-inner">
-            <h3>Позвоните с вашего номера</h3>
-            <p class="client-number nowrap">{{ number }}</p>
-            <h3>На номер </h3>
-            <p class="caller-number nowrap"><a href="tel:+78005558607">8(800) 555-86-07</a></p>
-            <p class="small-text">Звонок бесплатный. <b>Разговаривать ни с кем не нужно.</b> {{ text }}.</p>
-            <div class="cancel"></div>
-        </div>
-    </dialog>
+
     <dialog id="add-dialog">
+        <form name="add-form" class="modal-inner">
+            <h3>Добавление нового пользователя</h3>
+
+            <label for="inp-add-name">Имя пользователя</label>
+            <input id="inp-add-name" type="text" placeholder="Имя пользователя" required>
+            <label for="inp-add-email">E-mail</label>
+            <input id="inp-add-email" type="email" placeholder="E-mail">
+            <label for="inp-add-address">Адрес</label>
+            <textarea id="inp-add-address" placeholder="Адрес"></textarea>
+            <label for="inp-add-login">Логин</label>
+            <input id="inp-add-login" type="text" placeholder="Логин" required>
+            <label for="inp-add-password">Пароль</label>
+            <input id="inp-add-password" type="password" placeholder="Пароль" required>
+            <div class="row">
+                <label for="show-password">Показать пароль</label>
+                <input type="checkbox" id="show-password">
+            </div>
+            <div class="menu-cont">
+                <div></div>
+                <button id="add-send-button">Отправить</button>
+            </div>
+            <div class="cancel"></div>
+        </form>
+    </dialog>
+
+    <dialog id="edit-dialog">
         <div class="modal-inner">
             <h3>Позвоните с вашего номера</h3>
             <p class="client-number nowrap">{{ number }}</p>

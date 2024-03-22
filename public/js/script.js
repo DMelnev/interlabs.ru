@@ -108,13 +108,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // ############################### Adding ##################################################
 
+    const addDialog = document.getElementById('add-dialog');
+    const addButton = document.getElementById('add-button');
+    const sendAddButton = document.getElementById('add-send-button');
+
     for (let cancel of document.querySelectorAll('.cancel')) {
         cancel.addEventListener('click', function (e) {
             e.target.closest('dialog').close();
         })
     }
 
-    const addDialog = document.getElementById('add-dialog');
+    addButton.addEventListener('click', function (e) {
+        addDialog.showModal();
+    })
+    document.getElementById('show-password').addEventListener('change', function (e) {
+        document.getElementById('inp-add-password').type = e.target.checked ? 'text' : 'password';
+    })
     addDialog.showModal();
 
+    sendAddButton.addEventListener('click', function (e) {
+        e.preventDefault();
+    })
 })

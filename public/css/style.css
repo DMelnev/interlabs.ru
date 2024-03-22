@@ -48,7 +48,7 @@ tr:hover {
 }
 
 td, th {
-    padding: 2px 5px;
+    padding: 5px 7px;
     margin: 1px 1px 2px 1px;
     background-color: transparent;
     border-radius: 5px;
@@ -65,6 +65,11 @@ button {
     border: 0;
     cursor: pointer;
     background-color: transparent;
+}
+
+button:active {
+    position: relative;
+    top: 1px;
 }
 
 .edit:has(button:hover),
@@ -141,11 +146,6 @@ tr:has(input:checked) {
     background-color: #e0e0e0;
 }
 
-button:active {
-    position: relative;
-    top: 1px;
-}
-
 .error {
     font-weight: bold;
     font-size: 0.8rem;
@@ -202,7 +202,8 @@ dialog {
     box-shadow: 2px 3px 6px gray;
     z-index: 99;
 }
-dialog::backdrop{
+
+dialog::backdrop {
     background-color: gray;
     opacity: 0.8;
     z-index: 98;
@@ -216,7 +217,10 @@ dialog::backdrop{
     align-content: center;
     justify-content: center;
     background-color: white;
+    max-width: 600px;
+    flex: 1;
 }
+
 .modal-inner .cancel {
     background: url(../img/cancelCros.svg) center;
     position: absolute;
@@ -224,8 +228,39 @@ dialog::backdrop{
     right: 15px;
     width: 32px;
     height: 32px;
-    color: red;
-    fill: red;
     cursor: pointer;
+}
+
+.modal-inner h3:first-child {
+    margin: 2rem 4rem 0;
+}
+
+.modal-inner label {
+    margin: 1rem 1rem 0;
+}
+
+.modal-inner input[type="text"],
+.modal-inner input[type="email"],
+.modal-inner input[type="password"],
+.modal-inner textarea {
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 1px 2px 5px gray;
+    width: 350px;
+    margin: 0.2rem 1rem;
+}
+
+.modal-inner input[type="checkbox"] {
+    width: 30px;
+    border: 0;
+}
+
+.modal-inner .row {
+    margin-top: 0.5rem;
+}
+
+.modal-inner .row label {
+    margin: 0 1rem;
 }
 
