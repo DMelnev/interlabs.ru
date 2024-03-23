@@ -26,7 +26,6 @@ class UserRepository
     {
         $sql = 'SELECT * FROM user WHERE user.id = :id';
         $params = ['id' => $id];
-        /** @var User $user */
         $user = $this->db->query($sql, $params, User::class);
 
         return $user ? $user[0] : null;
@@ -36,7 +35,6 @@ class UserRepository
     {
         $sql = 'SELECT * FROM user WHERE user.login = :login';
         $params = ['login' => $login];
-        /** @var User $user */
         $user = $this->db->query($sql, $params, User::class);
 
         return $user ? $user[0] : null;

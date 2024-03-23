@@ -118,8 +118,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const editDialog = document.getElementById('edit-dialog');
         const sendEditButton = document.getElementById('edit-send-button');
         const clearEditQuery = "form.modal-inner .error";
+        const inputListEdit = document.querySelectorAll('#edit-dialog input, #edit-dialog textarea');
+
         let dataForSending;
         initEditButtons();
+        clearInputs(inputListEdit);
 
         function initEditButtons() {
             let editButtons = document.querySelectorAll('tbody .' + cellNames.edit);
