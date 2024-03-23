@@ -46,7 +46,7 @@ class DbHandler
         if (!$this->query) return null;
         $error = $this->query->errorInfo();
 
-        return $error[0] === PDO::ERR_NONE ? null : $error[2];
+        return $error[0] !== PDO::ERR_NONE ? null : $error[2];
     }
 
 }

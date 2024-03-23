@@ -50,7 +50,7 @@ class UserRepository
         return $this->db->getError();
     }
 
-    public function addUser(array $data): ?string
+    public function addUser(array $data)
     {
         $params = [
             'name' => $data['name'],

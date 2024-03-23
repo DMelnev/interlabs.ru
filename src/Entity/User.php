@@ -17,7 +17,7 @@ class User
         return $this->id;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -29,7 +29,7 @@ class User
         return $this;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -41,7 +41,7 @@ class User
         return $this;
     }
 
-    public function getAddress(): string
+    public function getAddress(): ?string
     {
         return $this->address;
     }
@@ -53,7 +53,7 @@ class User
         return $this;
     }
 
-    public function isAdmin(): bool
+    public function isAdmin(): ?bool
     {
         return $this->admin;
     }

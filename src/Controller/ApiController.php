@@ -22,23 +22,12 @@ class ApiController extends AbstractController
         $user = $this->security->getUser();
         if (!$user || !$user->isAdmin()) return $this->httpError(403, "Access Denied!");
         $inputJSON = file_get_contents('php://input');
-        if (!$inputJSON) return $this->renderJson(['status' => 'error', 'messages' => ['unknown' => 'Request is empty!']]);
+        if (!$inputJSON
+            || $inputJSON == '[]'
+            || $inputJSON == '{}'
+        ) return $this->renderJson(['status' => 'error', 'messages' => ['unknown' => 'Request is empty!']]);
 
-        return $this->renderJson($this->apiHandler->addUser(json_decode($inputJSON)));
-    }
-
-    /**
-     * @Route("/api/v1/user/edit", name="app_api_v1_user_edit", method="POST")
-     */
-    public function editUser()
-    {
-        $user = $this->security->getUser();
-        if (!$user) return $this->httpError(403, "Access Denied!");
-
-        $inputJSON = file_get_contents('php://input');
-        if (!$inputJSON) return $this->renderJson(['status' => 'error', 'message' => 'Request is empty!']);
-
-        return $this->renderJson(['test' => 'ok']);
+        return $this->renderJson($this->apiHandler->addUser(json_decode($inputJSON, true)));
     }
 
     /**
@@ -55,6 +44,20 @@ class ApiController extends AbstractController
         $this->apiHandler->deleteUsers(json_decode($inputJSON));
 
         return $this->renderJson(['status' => 'success']);
+    }
+
+    /**
+     * @Route("/api/v1/user/edit", name="app_api_v1_user_edit", method="POST")
+     */
+    public function editUser()
+    {
+        $user = $this->security->getUser();
+        if (!$user) return $this->httpError(403, "Access Denied!");
+
+        $inputJSON = file_get_contents('php://input');
+        if (!$inputJSON) return $this->renderJson(['status' => 'error', 'message' => 'Request is empty!']);
+
+        return $this->renderJson(['test' => 'ok']);
     }
 
 }
