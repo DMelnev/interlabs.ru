@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\UserRepository;
-use App\Service\dbHandler;
+use App\Service\DbHandler;
 
 class MainController extends AbstractController_
 {
@@ -12,7 +12,7 @@ class MainController extends AbstractController_
 
     public function __construct()
     {
-        $this->db = new dbHandler();
+        $this->db = new DbHandler();
         $this->userRepository = new UserRepository();
         parent::__construct();
     }
