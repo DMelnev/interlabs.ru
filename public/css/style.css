@@ -13,9 +13,12 @@ table {
     max-width: 1024px;
 }
 
-thead th:nth-child(1) {
+thead th:nth-child(1),
+tbody td:nth-child(1) {
     width: 25px;
+    text-align: center;
 }
+
 thead th:nth-child(2) {
     width: 10%;
 }
@@ -45,9 +48,15 @@ tr {
     background-color: #f0f0f0;
     cursor: pointer;
 }
+.admin {
+    background-color: #f9f0f0;
+}
 
 tr:hover {
     background-color: #e5e5e5;
+}
+.admin:hover {
+    background-color: #f5e5e5;
 }
 
 td, th {
@@ -75,8 +84,8 @@ button:active {
     top: 1px;
 }
 
-.edit:has(button:hover),
-tr:has(.edit button:hover) {
+.td-edit:has(button:hover),
+tr:has(.td-edit button:hover) {
     background-color: #d0ffd0;
 }
 
@@ -84,13 +93,9 @@ tr:has(input:checked) {
     background-color: #ffd0d0;
 }
 
-.edit svg {
+.td-edit svg {
     fill: green;
     width: 15px;
-}
-
-.address {
-    width: 100%;
 }
 
 .container {
@@ -266,15 +271,17 @@ dialog::backdrop {
 .modal-inner .row label {
     margin: 0 1rem;
 }
+
 .modal-inner .menu-cont {
     margin-top: 1rem;
 }
-form.modal-inner .error{
+
+form.modal-inner .error {
     margin: 0 0 0 1.5rem;
     display: none;
     font-size: 0.9rem;
 }
-.error:focus{
+
+.error:focus {
     background-color: whitesmoke;
 }
-

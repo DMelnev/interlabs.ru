@@ -24,6 +24,7 @@ class MainController extends AbstractController
     {
         $user = $this->security->getUser();
         if (!$user) return $this->redirectToRoute('app_login');
+
         return $this->render('/templates/content/list.php', [
             'users' => $this->userRepository->getAll(),
             'user' => $user,

@@ -21,13 +21,10 @@ class ApiController extends AbstractController
     {
         $user = $this->security->getUser();
         if (!$user || !$user->isAdmin()) return $this->httpError(403, "Access Denied!");
-        $inputJSON = file_get_contents('php://input');
-        if (!$inputJSON
-            || $inputJSON == '[]'
-            || $inputJSON == '{}'
-        ) return $this->renderJson(['status' => 'error', 'messages' => ['unknown' => 'Request is empty!']]);
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (!$data) return $this->renderError('Request is empty!');
 
-        return $this->renderJson($this->apiHandler->addUser(json_decode($inputJSON, true)));
+        return $this->renderJson($this->apiHandler->addUser($data));
     }
 
     /**
@@ -38,12 +35,10 @@ class ApiController extends AbstractController
         $user = $this->security->getUser();
         if (!$user || !$user->isAdmin()) return $this->httpError(403, "Access Denied!");
 
-        $inputJSON = file_get_contents('php://input');
-        if (!$inputJSON) return $this->renderJson(['status' => 'error', 'message' => 'Request is empty!']);
+        $data = json_decode(file_get_contents('php://input'));
+        if (!$data) return $this->renderError('Request is empty!');
 
-        $this->apiHandler->deleteUsers(json_decode($inputJSON));
-
-        return $this->renderJson(['status' => 'success']);
+        return $this->renderJson($this->apiHandler->deleteUsers($data));
     }
 
     /**
@@ -54,10 +49,11 @@ class ApiController extends AbstractController
         $user = $this->security->getUser();
         if (!$user) return $this->httpError(403, "Access Denied!");
 
-        $inputJSON = file_get_contents('php://input');
-        if (!$inputJSON) return $this->renderJson(['status' => 'error', 'message' => 'Request is empty!']);
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (!$data) return $this->renderError('Request is empty!');
+        if(!$user->isAdmin() && $user->getId() != $data['id']) return $this->httpError(403, "Access Denied!");
 
-        return $this->renderJson(['test' => 'ok']);
+        return $this->renderJson($this->apiHandler->editUser($data));
     }
 
 }

@@ -13,7 +13,7 @@
                 <input type="password" name="password" id="password" placeholder="Пароль" required>
             </div>
             <div class="row end">
-                <button class="send">Отправить</button>
+                <button class="send">Войти</button>
             </div>
         </div>
     </form>

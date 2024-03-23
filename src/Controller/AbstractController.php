@@ -34,6 +34,10 @@ abstract class AbstractController
 
         return json_encode($data);
     }
+    protected function renderError(string $message)
+    {
+        return $this->renderJson(['status' => 'error', 'messages' => ['unknown' => $message]]);
+    }
 
     protected function httpError(int $code, string $message): string
     {

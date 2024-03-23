@@ -16,7 +16,8 @@ class UserRepository
 
     public function getAll(): array
     {
-        $sql = 'SELECT * FROM user WHERE user.admin <> true OR user.admin IS NULL';
+//        $sql = 'SELECT * FROM user WHERE user.admin <> true OR user.admin IS NULL';
+        $sql = 'SELECT * FROM user';
         $params = [];
         return $this->db->query($sql, $params, User::class);
     }
@@ -41,16 +42,16 @@ class UserRepository
         return $user ? $user[0] : null;
     }
 
-    public function deleteUserById(int $id): ?string
+    public function deleteById(int $id): ?string
     {
-        $sql = 'DELETE FROM user WHERE user.id = :id';
+        $sql = 'DELETE FROM user WHERE user.id = :id AND (user.admin IS NULL OR user.admin = false)';
         $params = ['id' => $id];
         $this->db->query($sql, $params);
 
         return $this->db->getError();
     }
 
-    public function addUser(array $data)
+    public function insert(array $data): ?string
     {
         $params = [
             'name' => $data['name'],
@@ -61,6 +62,20 @@ class UserRepository
         ];
         $sql = 'INSERT INTO user (login, name, email, address, password) 
     VALUES  (:login, :name, :email, :address, :password)';
+
+        $this->db->query($sql, $params);
+        return $this->db->getError();
+    }
+
+    public function update(array $data): ?string
+    {
+        $params = [
+            'id' => $data['id'],
+            'name' => $data['name'],
+            'email' => $data['email'] ?? '',
+            'address' => $data['address'] ?? '',
+        ];
+        $sql = 'UPDATE user SET name = :name, email = :email, address = :address WHERE id = :id';
 
         $this->db->query($sql, $params);
         return $this->db->getError();
