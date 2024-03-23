@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Repository\UserRepository;
 use App\Service\dbHandler;
 
-class MainController extends AbstractController
+class MainController extends AbstractController_
 {
     private DbHandler $db;
     private UserRepository $userRepository;

@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-class SecurityController extends AbstractController
+class SecurityController extends AbstractController_
 {
 
     /**

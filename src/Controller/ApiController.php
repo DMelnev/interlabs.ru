@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Service\ApiHandler;
 
-class ApiController extends AbstractController
+class ApiController extends AbstractController_
 {
     private ApiHandler $apiHandler;
 

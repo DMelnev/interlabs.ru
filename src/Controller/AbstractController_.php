@@ -7,7 +7,7 @@ use App\Entity\DTO\ControllerDataDTO;
 use App\Entity\DTO\ControllerListDTO;
 use App\Service\Security;
 
-abstract class AbstractController
+abstract class AbstractController_
 {
 
     protected Security $security;

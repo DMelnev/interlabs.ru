@@ -42,7 +42,7 @@ class Core
                 $param = $item;
             }
 
-            return $execute->$func($param); // хардкод для одного параметра
+            return $execute->$func($param); // для одного параметра
         }
 
         header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
@@ -143,7 +143,7 @@ class Core
     private function getControllers(): array
     {
         $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(dirname(__DIR__, 2)));
-        $regex = new RegexIterator($iterator, '/^.+\.php$/i', RegexIterator::GET_MATCH);
+        $regex = new RegexIterator($iterator, '/^.+\Controller.php$/i', RegexIterator::GET_MATCH);
         $controllers = [];
         foreach ($regex as $file => $value) {
             $current = $this->parseTokens(token_get_all(file_get_contents(str_replace('\\', '/', $file))));
